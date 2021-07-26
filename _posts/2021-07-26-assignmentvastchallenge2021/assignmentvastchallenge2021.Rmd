@@ -385,7 +385,39 @@ length_plot2 <- mbdata_classed %>%
 length_voplot + length_plot2
 ```
 
+### 6.Visualizing Top 15 frequent words of three record types by bar chart
 
+To better present the difference of top 15 frequent key words in three record types, We examine how often associated words are preceded to one specific record type. We would like to explore the difference of frequent words in three records types. The below code chunk was used to visualize the top 15 common words between "junk" & "meaningful and "junk" and "typical_chatter"record types with bar plot.
+
+```{r}
+contribution_plot1 <- mb_usenet_words %>%
+  count(class, word) %>%
+  ungroup() %>%
+  filter(n >= 100) %>%
+  mutate(n = ifelse(class == "junk", -n, n)) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(n, word, fill = class)) +
+  geom_col() +
+  labs(x = "Contribution to record classification", y = NULL)
+```
+
+```{r}
+contribution_plot2 <- mb_usenet_words %>%
+  count(class, word) %>%
+  ungroup() %>%
+  filter(n >= 50) %>%
+  filter(class == "junk"| class == "Typical_Chatter") %>%
+  mutate(n = ifelse(class == "junk", -n, n)) %>%
+  mutate(word = reorder(word, n))%>%
+  ggplot(aes(n, word, fill = class)) +
+  geom_col() +
+  labs(x = "Contribution to record classification", y = NULL)
+```
+
+```{r fig.height=4, fig.width=10}
+contribution_plot1 + contribution_plot2
+
+```
 
 
 
