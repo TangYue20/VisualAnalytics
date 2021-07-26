@@ -473,6 +473,40 @@ top_terms_by_topic_LDA <- function(word,
 top_terms_by_topic_LDA(reviews$text, number_of_topics = 6)
 ```
 From the results shown in 8 topic model, we can see some important hints about social event happened during 17:00pm - 21:30 pm, for example topic 1 shows key word "rally", topic 2 shows high beta on "ploice" and "stangoff", topic 3 shows high beta on "fire", topic 5 presents "van" and "APD". Even though some words in 8 topic are overlapped, we could summarize 4 events from the topic generated and data provided. 
+ 
+**Event 1: POK rally** 
+
+Firstly, we filter all rally reports and count the relevant words appeared in rally reports. We use the below code chunk to get the 
+
+```{r}
+options(scipen = 999)
+rally <- data2 %>% 
+  filter(str_detect(message,"POKRally|rally|park|Rallypark|Parkcheck|
+                    POKliesinthepark|POKRallyinthepark")) 
+```
+
+```{r}
+rally_count <- rally %>%
+  group_by(date) %>%
+  count(date)
+
+a<- ggplot(rally_count,aes(x= date)) +
+  geom_histogram(aes(y = stat(density)), 
+                   colour="black", fill="white") +
+  geom_density(alpha = 0.2, fill = "#FF6666") +
+  ggtitle("risk of POK rally event")
+```
+
+How many people would be affected in rally event? we can use the below code chunk to evaluate the number of people.
+
+```{r}
+rally_people_number <- rally %>%
+  filter(str_detect(message,"[0-9]+")) %>%
+  mutate(number = extract_numeric(message)) %>%
+  filter(number >0)
+max(rally_people_number$number)
+           
+```
 
 
 
