@@ -508,8 +508,68 @@ max(rally_people_number$number)
            
 ```
 
+**Event 2: Fire in Dancing Dolphin**
+
+Using the below code chunk, we could plot the risk level of Fire in Dancing Dolphin.Twits with hashtags such as Fire, DancingDolphinFire, AFD (Abila Fire Department) are used to identify the event.
+
+```{r}
+fire <- data2 %>% 
+  filter(str_detect(message,"fire|Dancing|Dolphin|Department|
+                    building|Dancingdolfinfire|AFD"))
+fire_count <- fire %>%
+  group_by(date) %>%
+  count(date)
+
+b<- ggplot(fire_count,aes(x= date)) +
+    geom_histogram(aes(y = stat(density)), 
+                   colour="black", fill="white") +
+  geom_density(alpha = 0.2, fill = "#FF6666") +
+  ggtitle("risk of fire in dancing dolphin event")
+  
+```
 
 
+**Event 3: Hit & Run Accident**
+
+Using the below code chunk, we could plot the risk level of Hit & Run Accident. Hashtags bicyclist, Jerkdrivers and A@Brew'veBeenServed are used to identify this event.
+
+```{r}
+hit_count <- usenet_words %>% 
+  filter(str_detect(word,"van|bicyclist|hit|Cafe|@Brew'veBeenServed
+                    |escaped|Jerkdrivers|Vehicle Accident-Report")) %>%
+  group_by(date) %>%
+  count(word,date)
+
+c<- ggplot(hit_count,aes(x= date)) +
+    geom_histogram(aes(y = stat(density)), 
+                   colour="black", fill="white") +
+  geom_density(alpha = 0.2, fill = "#FF6666") +
+  ggtitle("risk of hit & run accident event")
+#c
+
+```
+
+**Event 4: Shooting and standoff**
+
+Using the below code chunk, we could plot the risk level of shooting and standoff event. and the hashtags Troubleatgelato, Gelatogalorestandoff, Blackvan and Hostage are used to identified this event.
+
+```{r}
+shooting_count <- usenet_words %>% 
+  filter(str_detect(word,"shooting|standoff|^gun|shooter|shooting fire|
+                    ambulance|Gelatogalorestandofff|Gelato Galore|Hostage")) %>%
+  group_by(date) %>%
+  count(word,date)
+
+d<- ggplot(hit_count,aes(x= date)) +
+    geom_histogram(aes(y = stat(density)), 
+                   colour="black", fill="white") +
+  geom_density(alpha = 0.2, fill = "#FF6666") +
+  ggtitle("risk of shooting and standoff event")
+```
+
+```{r fig.height=7, fig.width=10}
+a +b+c+d
+```
 
 
 
