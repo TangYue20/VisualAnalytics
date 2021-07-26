@@ -146,5 +146,55 @@ mbdata1 <- anti_join(mbdata,junk,by="message")
            
 ```
 
+* Classify Spam records: Using the same way, we detect Spam records by below code chunk and classify corresponding emails into Spam class.
+
+```{r}
+meaningful<- mbdata1 %>% filter_at(.vars = vars(message, author), 
+any_vars(str_detect(., pattern ="#gowaway|#POKrally|van|gun|fire
+|rally|shooting|#AlibaPost|#CentralBulletin|
+#POKRallyinthePark|#IntNews|#nopeace|#IntNews|#KronosStar|#stuck|
+#Gastech employees|#POK connection|#Abila|#abilafire|#POK| #NewsOnline
+|#hurtfirefighte|#rally|#pokrally|#SavePeople
+|#terrorists|#tellme| #praying|@carlyscoffee|@dancingdolphin|
+terorrist|cop|#abilawatcher|#IntNews|#KronosStar|#gettingFired
+|#GelatoGalore|#helpu|#HI|#newsOnline|#DancingDolphinFire|
+#jerkdrivers|#stopby|#standoff|#abilaFire|#hurtfirefighter
+|#norest|#firstresponders|#IntNews|#AFDHeroes|#APD|#shooting
+|#kidnapping|#troubleatgelato|#Abila|#burnabila|#hostage|
+#repent|#dansingdolfinfire|#jerkdrivers|#AFD|#APDSWAT|
+#shooter|#HELPME|#fire|#thanksAFD")))
+                      
+```
+
+* Classify Meaningful records: Apart from the Spam and Junk, the rest of emails would be classified into meaningful records, which could be received by the below code chunk.In this step, *anti_join()* function in <span style="color:blue">*dplyr*</span> package would be used. 
+
+```{r}
+Typical_Chatter <- anti_join(mbdata1,junk,by="message") 
+Typical_Chatter <- anti_join(mbdata1,meaningful,by="message")
+```
+
+Now, all records in Microblog data have been labeled with responding class- **Junk**, **Meanigful** and **Spam**.
+
+* Next, we add "class" as a new column to represent the label of every record.
+
+```{r}
+junk$class <- "junk"
+Typical_Chatter$class <- "Typical_Chatter"
+meaningful$class <- "meaningful"
+
+```
+
+* Using below code chunk, we combine Junk, Spam and Meaningful records into one dataframe which was renamed as data_classed. In this preprocessing step, the *rbind* function of dplry package would be used.
+
+```{r}
+mbdata_classed <- rbind(junk, Typical_Chatter, meaningful)
+
+```
+
+* In the previous pre-processing step, we keep # as a tag to identify Junk, Spam and meaningful records. After records classifying, we move "#" in the tag using below code chunk.
+
+```{r}
+mbdata_classed$message <- str_replace_all(mbdata_classed$message,fixed("#"),"")
+```
 
 

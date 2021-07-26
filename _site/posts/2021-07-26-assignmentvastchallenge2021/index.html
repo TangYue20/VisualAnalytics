@@ -2238,6 +2238,68 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
+<ul>
+<li>Classify Spam records: Using the same way, we detect Spam records by below code chunk and classify corresponding emails into Spam class.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>meaningful</span><span class='op'>&lt;-</span> <span class='va'>mbdata1</span> <span class='op'>%&gt;%</span> <span class='fu'>filter_at</span><span class='op'>(</span>.vars <span class='op'>=</span> <span class='fu'>vars</span><span class='op'>(</span><span class='va'>message</span>, <span class='va'>author</span><span class='op'>)</span>, 
+<span class='fu'>any_vars</span><span class='op'>(</span><span class='fu'>str_detect</span><span class='op'>(</span><span class='va'>.</span>, pattern <span class='op'>=</span><span class='st'>"#gowaway|#POKrally|van|gun|fire
+|rally|shooting|#AlibaPost|#CentralBulletin|
+#POKRallyinthePark|#IntNews|#nopeace|#IntNews|#KronosStar|#stuck|
+#Gastech employees|#POK connection|#Abila|#abilafire|#POK| #NewsOnline
+|#hurtfirefighte|#rally|#pokrally|#SavePeople
+|#terrorists|#tellme| #praying|@carlyscoffee|@dancingdolphin|
+terorrist|cop|#abilawatcher|#IntNews|#KronosStar|#gettingFired
+|#GelatoGalore|#helpu|#HI|#newsOnline|#DancingDolphinFire|
+#jerkdrivers|#stopby|#standoff|#abilaFire|#hurtfirefighter
+|#norest|#firstresponders|#IntNews|#AFDHeroes|#APD|#shooting
+|#kidnapping|#troubleatgelato|#Abila|#burnabila|#hostage|
+#repent|#dansingdolfinfire|#jerkdrivers|#AFD|#APDSWAT|
+#shooter|#HELPME|#fire|#thanksAFD"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<ul>
+<li>Classify Meaningful records: Apart from the Spam and Junk, the rest of emails would be classified into meaningful records, which could be received by the below code chunk.In this step, <em>anti_join()</em> function in <span style="color:blue"><em>dplyr</em></span> package would be used.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>Typical_Chatter</span> <span class='op'>&lt;-</span> <span class='fu'>anti_join</span><span class='op'>(</span><span class='va'>mbdata1</span>,<span class='va'>junk</span>,by<span class='op'>=</span><span class='st'>"message"</span><span class='op'>)</span> 
+<span class='va'>Typical_Chatter</span> <span class='op'>&lt;-</span> <span class='fu'>anti_join</span><span class='op'>(</span><span class='va'>mbdata1</span>,<span class='va'>meaningful</span>,by<span class='op'>=</span><span class='st'>"message"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Now, all records in Microblog data have been labeled with responding class- <strong>Junk</strong>, <strong>Meanigful</strong> and <strong>Spam</strong>.</p>
+<ul>
+<li>Next, we add “class” as a new column to represent the label of every record.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>junk</span><span class='op'>$</span><span class='va'>class</span> <span class='op'>&lt;-</span> <span class='st'>"junk"</span>
+<span class='va'>Typical_Chatter</span><span class='op'>$</span><span class='va'>class</span> <span class='op'>&lt;-</span> <span class='st'>"Typical_Chatter"</span>
+<span class='va'>meaningful</span><span class='op'>$</span><span class='va'>class</span> <span class='op'>&lt;-</span> <span class='st'>"meaningful"</span>
+</code></pre>
+</div>
+</div>
+<ul>
+<li>Using below code chunk, we combine Junk, Spam and Meaningful records into one dataframe which was renamed as data_classed. In this preprocessing step, the <em>rbind</em> function of dplry package would be used.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mbdata_classed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>junk</span>, <span class='va'>Typical_Chatter</span>, <span class='va'>meaningful</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<ul>
+<li>In the previous pre-processing step, we keep # as a tag to identify Junk, Spam and meaningful records. After records classifying, we move “#” in the tag using below code chunk.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mbdata_classed</span><span class='op'>$</span><span class='va'>message</span> <span class='op'>&lt;-</span> <span class='fu'>str_replace_all</span><span class='op'>(</span><span class='va'>mbdata_classed</span><span class='op'>$</span><span class='va'>message</span>,<span class='fu'>fixed</span><span class='op'>(</span><span class='st'>"#"</span><span class='op'>)</span>,<span class='st'>""</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
