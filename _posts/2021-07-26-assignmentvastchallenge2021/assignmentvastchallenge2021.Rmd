@@ -345,3 +345,51 @@ ggplot(aes(x=class, y=total_count)) +
 
 latitudecount_plot
 ```
+### 5. Visualizing Word Length within Three Records Classes
+
+To explore the  Word Length within three records Classes, we calculate the length of every record and add a new column named "length" in mbdata_classed. In the code chunk below, *strsplit()* of *stringr* was used to get the word length.
+
+```{r}
+mbdata_classed$length <- sapply(mbdata_classed$message, function(x) length(unlist(strsplit(as.character(x), "\\W+"))))
+
+```
+
+
+A violin plot can be used to complement the visual discovery of word length distribution by classification. In this code code chunk below, boxplot of ggplot2 is used to plot a static boxplot.
+
+```{r}
+length_voplot <-mbdata_classed %>%
+ggplot(aes(x = class, y = length)) + 
+  geom_violin(aes(fill = class), trim = FALSE) +
+  geom_boxplot(width = 0.1) +
+  theme_classic() +
+  theme(legend.position = "none")
+
+```
+
+
+```{r}
+length_plot2 <- mbdata_classed %>%
+  group_by(class) %>%
+  ggplot(aes(
+    x = length, y = reorder(class, -length),
+    color = class
+  )) +
+  geom_jitter(position = position_jitter(seed = 2020, width = 0.2), alpha = 0.4, size = 2) +
+  stat_summary(fun = mean, geom = "point", size = 3, color = "red", alpha = 1)
+
+```
+
+```{r fig.height=6, fig.width=15}
+
+length_voplot + length_plot2
+```
+
+
+
+
+
+
+
+
+
