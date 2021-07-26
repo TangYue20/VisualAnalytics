@@ -197,4 +197,11 @@ mbdata_classed <- rbind(junk, Typical_Chatter, meaningful)
 mbdata_classed$message <- str_replace_all(mbdata_classed$message,fixed("#"),"")
 ```
 
+### 2.7 Data Tokenization and Word Counts
 
+After cleaning the text data, the next step is to segment sentence and count the occurrence of each word, to identify frequent words in records. The below code chunk shows how Multiple functions used to achieve this results:
+
+(1) unnest_tokens() function from <span style="color:blue">*tidytext*</span> package is used to split the sentences into tokens, 
+(2) stop_words() is used to remove stop-words.
+(3) str_detect() is used to detect the presence or absence of a pattern in string.
+(4) filter() of dplyr package is used to subset a data frame, retaining all rows that satisfy the specified conditions.

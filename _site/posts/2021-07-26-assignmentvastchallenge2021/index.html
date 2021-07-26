@@ -2300,6 +2300,14 @@ terorrist|cop|#abilawatcher|#IntNews|#KronosStar|#gettingFired
 </code></pre>
 </div>
 </div>
+<h3 id="data-tokenization-and-word-counts">2.7 Data Tokenization and Word Counts</h3>
+<p>After cleaning the text data, the next step is to segment sentence and count the occurrence of each word, to identify frequent words in records. The below code chunk shows how Multiple functions used to achieve this results:</p>
+<ol type="1">
+<li>unnest_tokens() function from <span style="color:blue"><em>tidytext</em></span> package is used to split the sentences into tokens,</li>
+<li>stop_words() is used to remove stop-words.</li>
+<li>str_detect() is used to detect the presence or absence of a pattern in string.</li>
+<li>filter() of dplyr package is used to subset a data frame, retaining all rows that satisfy the specified conditions.</li>
+</ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
