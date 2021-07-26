@@ -1,7 +1,7 @@
 name: "VisualBlog"
 title: "VisualBlog"
 description: |
-  My Blog
+  R for Data Science and Analytics
 output_dir: "_site"
 navbar:
   right:
