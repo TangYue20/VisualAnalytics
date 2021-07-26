@@ -15,5 +15,22 @@
     "preview": {},
     "last_modified": "2021-07-26T16:30:44+08:00",
     "input_file": "welcome.knit.md"
+  },
+  {
+    "path": "posts/2021-07-26-assignmentvastchallenge2021/",
+    "title": "assignment_VAST_Challenge_2021",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "TAng Yue",
+        "url": "https://scis.smu.edu.sg/"
+      }
+    ],
+    "date": "2021-07-26",
+    "categories": [],
+    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-07-26T16:41:08+08:00",
+    "input_file": "assignmentvastchallenge2021.knit.md"
   }
 ]
