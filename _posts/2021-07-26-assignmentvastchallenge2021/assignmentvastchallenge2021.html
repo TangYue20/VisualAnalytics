@@ -1551,6 +1551,73 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </code></pre>
 </div>
 </div>
+<h3 id="remove-special-chacaters">2.5 Remove Special Chacaters</h3>
+<p>In this step, we would like to use package <span style="color:blue"><em>stringr</em></span> to clean special characters, including " @, &lt; , ˜ " and none English words.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>data</span><span class='op'>$</span><span class='va'>message</span> <span class='op'>&lt;-</span> <span class='fu'>str_replace_all</span><span class='op'>(</span><span class='va'>data</span><span class='op'>$</span><span class='va'>message</span>,<span class='fu'>fixed</span><span class='op'>(</span><span class='st'>"&lt;"</span><span class='op'>)</span>,<span class='st'>""</span><span class='op'>)</span>
+<span class='va'>data</span><span class='op'>$</span><span class='va'>message</span> <span class='op'>&lt;-</span> <span class='fu'>str_replace_all</span><span class='op'>(</span><span class='va'>data</span><span class='op'>$</span><span class='va'>message</span>,<span class='fu'>fixed</span><span class='op'>(</span><span class='st'>"˜"</span><span class='op'>)</span>,<span class='st'>""</span><span class='op'>)</span>
+<span class='va'>data</span><span class='op'>$</span><span class='va'>message</span> <span class='op'>&lt;-</span> <span class='fu'>str_replace_all</span><span class='op'>(</span><span class='va'>data</span><span class='op'>$</span><span class='va'>message</span>,<span class='fu'>fixed</span><span class='op'>(</span><span class='st'>"[\u4e00-\u9fa5]+"</span><span class='op'>)</span>, <span class='st'>""</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<ul>
+<li>For convenience of further analysis, we separate ‘ccdata’ and ‘mbdata’ from “data”, they respectively represent microblog record and emergency call center data collected by the Abila, Kronos local police and fire departments.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>ccdata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>type</span> <span class='op'>==</span> <span class='st'>"ccdata"</span><span class='op'>)</span>
+<span class='va'>mbdata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>type</span> <span class='op'>==</span> <span class='st'>"mbdata"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="classify-record">2.6 Classify Record</h3>
+<p>Based on content of data provided, we classified records into three segments, Junk, Typical_Chatter and Meaningful records, using <span style="color:blue"><em>stringr</em></span>, <span style="color:blue"><em>dplyr</em></span>package. Because emergency call center data is credible and reliable, here we just classify Microblog data into three classes.</p>
+<table>
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 62%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Junk</strong></td>
+<td>referred to advertisements or financial purpose reports.</td>
+</tr>
+<tr class="even">
+<td><strong>Meaningful</strong></td>
+<td>refers to informative records which spread real news about ongoing or impending events happen in Aliba.</td>
+</tr>
+<tr class="odd">
+<td><strong>Typical Chatter</strong></td>
+<td>represents no meaningful and irrelevant or inappropriate messages post online.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>classify Junk records: The str_detect() function is used to detect patterns of Junk records. And the below code chunk is used to identify the junk reports.|</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>junk</span> <span class='op'>&lt;-</span> <span class='va'>mbdata</span> <span class='op'>%&gt;%</span> <span class='fu'>filter_at</span><span class='op'>(</span>.vars <span class='op'>=</span> <span class='fu'>vars</span><span class='op'>(</span><span class='va'>message</span>, <span class='va'>author</span><span class='op'>)</span>, 
+<span class='fu'>any_vars</span><span class='op'>(</span><span class='fu'>str_detect</span><span class='op'>(</span><span class='va'>.</span>, pattern <span class='op'>=</span> <span class='st'>"#artists|#badcreadit|#cars
+  |#followme|#nobank|#meds|#cancer|#bestfood|#Grammar|cars.kronos
+  |#workAtHome|#gettingFired|#pharmacyripoff|#iThing|sellstuff
+  |homeworkers.kronos|#abilasFinest|#hungry|Easy make.money|
+  Officia1AbilaPost|visit this|#eastAbila link|#abilajobs|
+  clickhere|#abilajobs|#welksFurniture|#swat|#bugs|visit this link
+  |this site|junkman|carjunkers|eazymoney|junk99902|junkieduck113
+  |junkman377|junkman995|KronosQuoth|Clevvah4Evah"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>mbdata1</span> <span class='op'>&lt;-</span> <span class='fu'>anti_join</span><span class='op'>(</span><span class='va'>mbdata</span>,<span class='va'>junk</span>,by<span class='op'>=</span><span class='st'>"message"</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

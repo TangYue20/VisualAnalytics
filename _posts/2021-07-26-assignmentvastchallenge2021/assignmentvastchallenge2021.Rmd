@@ -96,3 +96,55 @@ data$date.yyyyMMddHHmmss. <- ymd_hms(data$date.yyyyMMddHHmmss.)
 names(data)[names(data) == "date.yyyyMMddHHmmss."] <- "date"
 ```
 
+### 2.5 Remove Special Chacaters
+
+In this step, we would like to use package <span style="color:blue">*stringr*</span> to clean special characters, including " @, < , ˜ " and none English words.
+
+
+```{r}
+
+data$message <- str_replace_all(data$message,fixed("<"),"")
+data$message <- str_replace_all(data$message,fixed("˜"),"")
+data$message <- str_replace_all(data$message,fixed("[\u4e00-\u9fa5]+"), "")
+
+```
+
+
+* For convenience of further analysis, we separate 'ccdata' and 'mbdata' from "data", they respectively represent microblog record and emergency call center data collected by the Abila, Kronos local police and fire departments.
+
+```{r}
+ccdata <- subset(data, type == "ccdata")
+mbdata <- subset(data, type == "mbdata")
+
+```
+
+### 2.6 Classify Record
+
+Based on content of data provided, we classified records into three segments, Junk, Typical_Chatter and Meaningful records, using <span style="color:blue">*stringr*</span>, <span style="color:blue">*dplyr*</span>package. Because emergency call center data is credible and reliable, here we just classify Microblog data into three classes.
+
+
+Class| Definition
+|------|----------|
+|**Junk**| referred to advertisements or financial purpose reports.|
+|**Meaningful**| refers to informative records which spread real news about ongoing or impending events happen in Aliba.|
+|**Typical Chatter**|represents no meaningful and irrelevant or inappropriate messages post online. |
+
+* classify Junk records: The str_detect() function is used to detect patterns of Junk records. And the below code chunk is used to identify the junk reports.|
+
+```{r}
+junk <- mbdata %>% filter_at(.vars = vars(message, author), 
+any_vars(str_detect(., pattern = "#artists|#badcreadit|#cars
+  |#followme|#nobank|#meds|#cancer|#bestfood|#Grammar|cars.kronos
+  |#workAtHome|#gettingFired|#pharmacyripoff|#iThing|sellstuff
+  |homeworkers.kronos|#abilasFinest|#hungry|Easy make.money|
+  Officia1AbilaPost|visit this|#eastAbila link|#abilajobs|
+  clickhere|#abilajobs|#welksFurniture|#swat|#bugs|visit this link
+  |this site|junkman|carjunkers|eazymoney|junk99902|junkieduck113
+  |junkman377|junkman995|KronosQuoth|Clevvah4Evah")))
+
+mbdata1 <- anti_join(mbdata,junk,by="message") 
+           
+```
+
+
+
