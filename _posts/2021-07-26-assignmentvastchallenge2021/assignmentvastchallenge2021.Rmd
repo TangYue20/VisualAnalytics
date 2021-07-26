@@ -26,3 +26,73 @@ The 2021 Visual Analytics Science and Technology (VAST) Challenge presented rese
 
 This module will research Mini-Challenge 3 which includes multiple types of text data for participants to feature real-time streaming social media and emergency service data for participants to provide hostage and kidnapper information.This challenge has 3 tasks and questions and asked the participants to integrate results to evaluate the changing levels of risk to the public and recommend actions. 
 
+# 2. Data preparation and Exploration 
+
+### 2.1 Data Source
+
+* There are three dataset provides in Mini-Challenge 3 :
+
+  + Microblog records that have been identified by automated filters as being potentially relevant to the ongoing incident
+
+  + Text transcripts of emergency dispatches by the Abila, Kronos local police and fire departments.
+
+  + maps of Abila and background documents.
+
+
+* The data of Microblog and text transcripts of emergency dispatches are found in three segments:
+
+  + Segment 1  :"csv-1700-1830.csv" - covers the time period from 1700 to 1830 Abila time on January 23.
+  + Segment 2: "csv-1831-2000.csv'- covers the time period from 1830 to 2000 Abila time on January 23.
+  + Segment 3: "csv-2001-2131.csv" - covers the time period from 2000 to shortly after 2130 Abila time on January 23. 
+
+### 2.2 Install and load R package
+
+In this module, the tidyverse, tidytext, dplyr and other packages will be used, which could be seen from below code chunk.
+
+
+```{r}
+packages = c('tidytext', 'tidyverse','dplyr','tm',
+             'widyr', 'wordcloud','lubridate','wordcloud',
+             'DT', 'ggwordcloud', 'SnowballC','ggplot2',
+             'tokenizers', 'lubridate', 'topicmodels','stringr',
+             'hms','tidyverse', 'stringr','clock','tmap',
+             'tidygraph', 'ggraph', 'tidytext','dygraphs','sf',
+             'igraph','rgdal','raster','sp','patchwork','hrbrthemes')
+for(p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+```
+
+### 2.3 Import dataset and combine data
+
+The data of Microblog records and emergency calls are stored in separate csv files. And three csv files share same columns but data generate from different date, which is shown below.
+
+![](image/1.files.PNG){width=50%}
+
+* Firstly, we need to combine 3 files into one consolidated file, which is necessary for the following analysis. In this step, package <span style="color:blue">*tidyverse*</span> would be used.The following R code shows the process of data consolidation, then three datasets with different date have been integrated into one file.
+
+```{r}
+library(tidyverse)
+table1 <- read.csv("data/csv-1700-1830.csv")
+table2 <- read.csv("data/csv-1831-2000.csv")
+table3 <- read.csv("data/csv-2001-2131.csv")
+data <- rbind(table1, table2,table3)
+```
+
+### 2.4  Modifying Date format 
+
+* converting character objects to dates can be made easier by using the <span style="color:blue">*lubridate*</span> package, which would be used to convert date type from 'yyyymmddhhmmss' to 'yyyy-mm-dd hh:mm:ss', and create a new column 'date' in data, and the code chunk could be seen below.
+
+```{r}
+data$date.yyyyMMddHHmmss. <- ymd_hms(data$date.yyyyMMddHHmmss.)
+```
+
+* Rename "date.yyyyMMddHHmmss." in data into "date" with concise format.
+
+```{r}
+names(data)[names(data) == "date.yyyyMMddHHmmss."] <- "date"
+```
+
