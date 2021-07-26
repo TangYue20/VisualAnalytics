@@ -418,7 +418,61 @@ contribution_plot2 <- mb_usenet_words %>%
 contribution_plot1 + contribution_plot2
 
 ```
+## 2. Question 2
 
+To analyze and present potential consequences of the situation, we conbine the ccdata and meaningful data to explore. We can use the LDA() function from the topic models package, setting k = 8, to create a eight-topic LDA model, helping use avoiding to oveymany word overlaps.
+
+```{r}
+ccdata$class <- "meaningful"
+data2 <- rbind(ccdata, meaningful)
+
+data2$message <- str_replace_all(data2$message,fixed("#"),"")
+
+usenet_words <- data2%>%
+  unnest_tokens(word, message) %>%
+  filter(#str_detect(word, "[a-z']$"),
+         !word %in% stop_words$word,
+         !word %in% c("aliba","abila","rt","homelandilluminations"
+                      ,"centralbulletin", "alibapost", "grammar",
+                      "kronosstar", "pok","abilapost"))
+```
+
+```{r}
+top_terms_by_topic_LDA <- function(word,
+                                   plot = T,
+                                   number_of_topics = 6)
+{
+    Corpus <- Corpus(VectorSource(usenet_words$word)) 
+    DTM <- DocumentTermMatrix(Corpus) 
+    unique_indexes <- unique(DTM$i) 
+    DTM <- DTM[unique_indexes,] 
+    lda <- LDA(DTM, k = number_of_topics, control = list(seed = 1234))
+    topics <- tidy(lda, matrix = "beta")
+
+    top_terms <- topics  %>% 
+      group_by(topic) %>% 
+      top_n(10, beta) %>%
+      ungroup() %>% 
+      arrange(topic, -beta) 
+    if(plot == T){
+        top_terms %>% 
+          mutate(term = reorder(term, beta)) %>%  
+          ggplot(aes(term,beta, fill = factor(topic))) +
+          geom_col(show.legend = FALSE) + 
+          facet_wrap(~ topic, scales = "free") + 
+          labs(x = NULL, y = "Beta") + 
+          coord_flip() 
+    }else{ 
+        return(top_terms)
+    }
+}
+```
+
+```{r}
+# plot top ten word terms by topic
+top_terms_by_topic_LDA(reviews$text, number_of_topics = 6)
+```
+From the results shown in 8 topic model, we can see some important hints about social event happened during 17:00pm - 21:30 pm, for example topic 1 shows key word "rally", topic 2 shows high beta on "ploice" and "stangoff", topic 3 shows high beta on "fire", topic 5 presents "van" and "APD". Even though some words in 8 topic are overlapped, we could summarize 4 events from the topic generated and data provided. 
 
 
 
