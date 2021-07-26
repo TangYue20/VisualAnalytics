@@ -205,3 +205,49 @@ After cleaning the text data, the next step is to segment sentence and count the
 (2) stop_words() is used to remove stop-words.
 (3) str_detect() is used to detect the presence or absence of a pattern in string.
 (4) filter() of dplyr package is used to subset a data frame, retaining all rows that satisfy the specified conditions.
+
+```{r}
+mb_usenet_words <- mbdata_classed %>%
+  unnest_tokens(word, message) %>%
+  filter(str_detect(word, "[a-z']$"),
+         !word %in% stop_words$word,
+         !word %in% c("aliba","abila","rt","homelandilluminations"))
+
+```
+
+**Generate the word cloud for records dataset**
+
+The most common words in entire dataset could be seen from below code chunk, the TOp 15 most frequent words could be seen by bar chart.
+
+```{r echo=FALSE}
+mb_usenet_words%>%
+  count(word,sort = TRUE) %>%
+    top_n(10) 
+
+```
+```{r}
+mb_usnet_word_pot <-mb_usenet_words %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 140) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(n, word)) +
+  theme(legend.position = "none")+
+  geom_col(fill = "steelblue") +
+  labs(y = NULL)
+mb_usnet_word_pot
+```
+
+**Generate the word cloud for entire records dataset**
+
+The importance of words can be illustrated as a word cloud as follow :
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+set.seed(1234)
+wordcloud(words = mb_usenet_words$word,
+          min.freq = 10,
+          max.words = 150, 
+          random.order=FALSE,
+          colors=brewer.pal(8, "Dark2"))
+```
+
+
