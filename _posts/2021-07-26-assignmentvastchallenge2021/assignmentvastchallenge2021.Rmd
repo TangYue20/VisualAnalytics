@@ -249,5 +249,41 @@ wordcloud(words = mb_usenet_words$word,
           random.order=FALSE,
           colors=brewer.pal(8, "Dark2"))
 ```
+# 3. Data Visualization 
 
+## Question 1: 
+
+Since ccdata is the text transcripts of emergency dispatches by local police and fire departments, it has high reliability and we regard it as meaningful records. Based on question required, we analyze mbdata which is Microblog records post online, it can provide us hints about the differences of meaningful events records, typical chatter and junk. **Our exploration and discussion for difference on junk, meaningful nd typical-chatter are described below**: 
+
+(1) explore the difference of most frequent words in three records types.
+(2) explore the difference of records length in three email classifications.
+(3) compare the sentence length of three records types.
+(4) compare the count of geographic location for three records types (for example whether records with location is more likely to be meaningful records)
+
+### 1.Visualizing difference of word frequency by word cloud
+
+Firstly, we count words for three classes- Junk, Spam, Meaningful using the code chunk below, then the frequent words in tree record class could be seen.
+
+```{r echo=TRUE} 
+mbwords_by_class <- mb_usenet_words %>%
+  count(class, word, sort = TRUE) %>%
+  ungroup()
+```
+
+```{r echo=TRUE, warning=FALSE}
+set.seed(1234)
+mbwords_by_class_plot <- mbwords_by_class %>%
+  filter(n > 50) %>%
+ggplot(aes(label = word,
+           size = 10,
+           color= class))+
+  geom_text_wordcloud() +
+  theme_minimal() +
+  facet_wrap(~class, ncol = 3, scales = "free") +
+  labs(x = "Record Classification") +
+  theme_bw()
+
+mbwords_by_class_plot
+
+```
 
