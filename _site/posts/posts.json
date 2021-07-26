@@ -28,9 +28,9 @@
     ],
     "date": "2021-07-26",
     "categories": [],
-    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "contents": "\r\n1. Overview\r\nThe 2021 Visual Analytics Science and Technology (VAST) Challenge presented researchers with a single fictitious scenario: the disappearance of staff members of the GASTech oil and gas company on location on the island of Kronos. A group named the Protectors of Kronos (POK) was the prime suspect in the disappearance. Three mini-challenges and a grand challenge were offered. For more information, please see VAST Challenge 2021.\r\nThis module will research Mini-Challenge 3 which includes multiple types of text data for participants to feature real-time streaming social media and emergency service data for participants to provide hostage and kidnapper information.This challenge has 3 tasks and questions and asked the participants to integrate results to evaluate the changing levels of risk to the public and recommend actions.\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-07-26T16:42:25+08:00",
+    "last_modified": "2021-07-26T16:43:56+08:00",
     "input_file": "assignmentvastchallenge2021.knit.md"
   }
 ]
