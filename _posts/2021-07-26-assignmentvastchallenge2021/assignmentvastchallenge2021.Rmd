@@ -256,9 +256,9 @@ wordcloud(words = mb_usenet_words$word,
 Since ccdata is the text transcripts of emergency dispatches by local police and fire departments, it has high reliability and we regard it as meaningful records. Based on question required, we analyze mbdata which is Microblog records post online, it can provide us hints about the differences of meaningful events records, typical chatter and junk. **Our exploration and discussion for difference on junk, meaningful nd typical-chatter are described below**: 
 
 (1) explore the difference of most frequent words in three records types.
-(2) explore the difference of records length in three email classifications.
-(3) compare the sentence length of three records types.
-(4) compare the count of geographic location for three records types (for example whether records with location is more likely to be meaningful records)
+(2) explore the difference of sentence length in three email classifications.
+(3) compare the count of geographic location for three records types (for example whether records with location is more likely to be meaningful records)
+(4) explore the difference of frequent words in three records types
 
 ### 1.Visualizing difference of word frequency by word cloud
 
@@ -560,7 +560,7 @@ shooting_count <- usenet_words %>%
   group_by(date) %>%
   count(word,date)
 
-d<- ggplot(hit_count,aes(x= date)) +
+d<- ggplot(shooting_count,aes(x= date)) +
     geom_histogram(aes(y = stat(density)), 
                    colour="black", fill="white") +
   geom_density(alpha = 0.2, fill = "#FF6666") +
@@ -571,5 +571,54 @@ d<- ggplot(hit_count,aes(x= date)) +
 a +b+c+d
 ```
 
+# Question 3
+**If you were able to send a team of first responders to any single place, where would it be? Provide your rationale. How might your response be different if you had to respond to the events in real time rather than retrospectively?**
+
+
+```{r}
+bgmap= raster("data/Geospatial/MC2-tourist.tif")
+bgmap
+```
+```{r}
+tm_shape(bgmap) +
+tm_rgb(bgmap, r = 1,g = 2,b = 3,
+       alpha = NA,
+       saturation = 1,
+       interpolate = TRUE,
+       max.value = 255)
+```
+
+```{r echo=TRUE}
+
+Abila_st <- st_read(dsn = "data/Geospatial",
+                    layer = "Abila")
+```
+
+```{r}
+gps <- mbdata %>%
+  dplyr::select(date,message,latitude,longitude)%>%
+  filter(!is.na(latitude), !is.na(longitude))
+gps_sf <- st_as_sf(gps, 
+                   coords = c("longitude", "latitude"),
+                       crs= 4326)
+gps_point <- gps_sf %>%
+  group_by(message) %>%
+  summarize(m = mean(date),
+            do_union = FALSE)%>%
+  st_cast("MULTIPOINT")
+
+```
+
+```{r}
+tmap_mode("view")
+tm_shape(bgmap) +
+  tm_rgb(bgmap, r = 1,g = 2,b = 3,
+       alpha = NA,
+       saturation = 1,
+       interpolate = TRUE,
+       max.value = 255) +
+  tm_shape(gps_point) +
+  tm_dots(col = "red")
+```
 
 
