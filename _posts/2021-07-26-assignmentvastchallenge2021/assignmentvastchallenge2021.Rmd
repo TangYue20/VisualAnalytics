@@ -253,7 +253,7 @@ wordcloud(words = mb_usenet_words$word,
 
 ## Question 1: 
 
-Since ccdata is the text transcripts of emergency dispatches by local police and fire departments, it has high reliability and we regard it as meaningful records. Based on question required, we analyze mbdata which is Microblog records post online, it can provide us hints about the differences of meaningful events records, typical chatter and junk. **Our exploration and discussion for difference on junk, meaningful nd typical-chatter are described below**: 
+Since ccdata is the text transcripts of emergency dispatches by local police and fire departments, it has high reliability and we regard it as meaningful records. Based on question required, we analyze mbdata which is Microblog records post online, it can provide us hints about the differences of meaningful events records, typical chatter and junk. **Our exploration and discussion for difference on junk, meaningful and typical-chatter are described below**: 
 
 (1) explore the difference of most frequent words in three records types.
 (2) explore the difference of sentence length in three email classifications.
