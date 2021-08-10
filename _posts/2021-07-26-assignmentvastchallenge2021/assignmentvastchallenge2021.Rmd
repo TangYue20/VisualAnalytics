@@ -648,3 +648,28 @@ tm_shape(bgmap) +
 ![](image/6. contribution.PNG)
 
 For better key words cooperation, two bar charts count the frequent words within two record types. it presents some top 15 frequent words only appear in junk or meaningful records, for example "fire","dancing","dolphin" only happened in menaingful records. but there are some words are frequent words for both, for example "pok", "kronosstar", this case is caused by that some junk poster usually attached with hot tag to attract people. Moreover, for junk and typical-chatter, there is no overlap key words, frequent words only occur in responding records type.
+
+
+### **Q2: Use visual analytics to represent and evaluate how the level of the risk to the public evolves over the course of the evening. Consider the potential consequences of the situation and the number of people who could be affected. Please limit your answer to 10 images and 1000 words.**
+
+![](image/7.topicmodel.png)
+
+Refer the topic which model generated and information data provides, we could roughly classify four event topic from 17:00 pm to 21:30, they are POK rally, Fire in Dancing Dolphin, Hit & Run Accident, and Shooting and standoff.
+
+![](image/11.risk.png)
+
+From the distribution of social attention and event keywords appeared, we leverage histogram to evaluate the risk level changed over the course. Overall, the risk levels of four social events are gradually drop down from beginning to end.
+
+**Event 1- POK rally**： POK rally event, the largest count of real-time rally topic happened about at 17:49, when Professor Lorenzo Di Stefano made the talk about corporate social responsibility. About 2000 people gathered there and heavy police was disposed. The rally closed around 19:05, so we can see the rally topic density dramatically drop down. Because some records post by participants and bystanders were froward by other people online, rally influence also exist for a while. 
+
+**Event 2 - Fire in Dancing Dolphin**: The fire was at Dancing Dolphin. At the 18:25pm, a witness @GreyCatCollectibles reported some precursor of the fire firstly. This social event keeps high attention until at 20:05 @CentralBulletin reported that an injured firefighter rescued from the fire, then the risk level went down. But around 20:25 AFD requested additional trucks. The fire kept spreading and AFD shifted focus to protecting surrounding buildings from the spread of fire, reported by @AbilaPOst at 20:52. Several miniutes later, the top floor of dancing dolphin collapsed, during this period, the risk level shows slightly increase. At 21:15, @KronosStart, @HomelandIlluminations and @AbilaFireDept issued reports that the fire was nearly under control, then the risk went lower.
+
+**Event 3- Hit & Run Accident**: at 19:19, the risk of hit & run accident event accidentally increased, because Abila Police Department reported a car hit on Souliou street, and @ hennyhenhendrix reported a black van hit his car. Many tweets also report a black van hit a bicyclist, a witness @KronosStar at 19:35:07 said the bicyclist was uninjured, The van hit and then escaped, police pursued it. 
+
+**Event 4- Shooting and standoff**: At 19:40, Abila Police reported gun fire at Gelato Galore near the City Park, and the shooters were in the black van. In the shooting fire, a cop was gunned down and witness said that there are hostages controled by gunman.  @HomelandIlluminations and @NewsOnline, then police and gunman stayed in standoff, which continues until about 21:00. And then the two van guys fighted with each other,at 21:13, the two kidnappers dropped the gun and gave up, then the risk went down.
+
+
+
+### **Q3: If you were able to send a team of first responders to any single place, where would it be? Provide your rationale. How might your response be different if you had to respond to the events in real time rather than retrospectively?**
+
+![](image/10.map.png){width=70%}
